@@ -1,6 +1,12 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_HUB_CREDENTIALS = credentials('dckr_pat_1MQWXNoSSB2-4wNWku03zXo51Yo')
+        DOCKER_IMAGE_NAME = 'mnmustafa1109/scd-lab-11'
+    }
+
+
     stages {
         stage('Build Docker Image') {
             steps {
@@ -10,6 +16,18 @@ pipeline {
                 }
             }
         }
+        stage('Push Docker Image to Docker Hub') {
+            steps {
+                script {
+                    // Login to Docker Hub
+                    docker.withRegistry('https://registry.hub.docker.com', DOCKER_HUB_CREDENTIALS) {
+                        // Push Docker image to Docker Hub
+                        docker.image("${DOCKER_IMAGE_NAME}:latest").push()
+                    }
+                }
+            }
+        }
+
         stage('Deploy') {
             steps {
                 script {
