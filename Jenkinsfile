@@ -1,6 +1,13 @@
 pipeline {
     agent any
 
+     environment {
+        DOCKER_CREDENTIALS = credentials('0eae42a5-0efa-44e8-b82a-fdeea921b6ac')
+        DOCKER_HUB_USERNAME = DOCKER_CREDENTIALS_USR
+        DOCKER_HUB_PASSWORD = DOCKER_CREDENTIALS_PSW
+        IMAGE_NAME = "scd-lab-10:latest"
+    }
+
     stages {
         stage('Build Docker Image') {
             steps {
@@ -10,6 +17,18 @@ pipeline {
                 }
             }
         }
+        stage('Push Docker Image') {
+            steps {
+                script {
+                    // Login to Docker Hub
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_USERNAME, DOCKER_HUB_PASSWORD) {
+                        // Push the built image to Docker Hub
+                        docker.image(IMAGE_NAME).push('latest')
+                    }
+                }
+            }
+        }
+
         stage('Deploy') {
             steps {
                 script {
