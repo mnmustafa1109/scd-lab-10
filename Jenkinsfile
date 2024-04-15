@@ -11,7 +11,7 @@ pipeline {
             steps {
                 script {
                     // Build Docker image
-                    dockerImage = docker.build("your-image-name:latest", "-f Dockerfile .")
+                    dockerImage = docker.build("scd-lab-10:latest", "-f Dockerfile .")
                 }
             }
         }
