@@ -2,6 +2,7 @@ pipeline {
     agent any
 
      environment {
+         registry = "mnmustafa1109/scd-lab-10"
         DOCKER_CREDENTIALS ='0eae42a5-0efa-44e8-b82a-fdeea921b6ac'
         dockerImage = ''
     }
@@ -11,7 +12,7 @@ pipeline {
             steps {
                 script {
                     // Build Docker image
-                    dockerImage = docker.build("scd-lab-10:latest", "-f Dockerfile .")
+                    dockerImage = docker.build registry + ":$BUILD_NUMBER"
                 }
             }
         }
