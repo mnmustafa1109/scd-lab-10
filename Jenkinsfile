@@ -3,7 +3,7 @@ pipeline {
 
      environment {
         DOCKER_CREDENTIALS ='0eae42a5-0efa-44e8-b82a-fdeea921b6ac'
-        IMAGE_NAME = "scd-lab-10:latest"
+        dockerImage = ''
     }
 
     stages {
@@ -11,7 +11,7 @@ pipeline {
             steps {
                 script {
                     // Build Docker image
-                    docker.build("your-image-name:latest", "-f Dockerfile .")
+                    dockerImage = docker.build("your-image-name:latest", "-f Dockerfile .")
                 }
             }
         }
@@ -21,7 +21,7 @@ pipeline {
                     // Login to Docker Hub
                     docker.withRegistry('', DOCKER_CREDENTIALS) {
                         // Push the built image to Docker Hub
-                        docker.image(IMAGE_NAME).push('latest')
+                        dockerImage.push()
                     }
                 }
             }
